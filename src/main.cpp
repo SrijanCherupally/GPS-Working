@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "gps.h"
 #include "imu_icm42688.h"
-#include "dps368.h"
+#include "sensor_dps368.h"
 
 void setup() {
   Serial.begin(115200);
