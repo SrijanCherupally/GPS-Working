@@ -1,27 +1,29 @@
+#pragma once
 #include <Arduino.h>
 #include <TinyGPSPlus.h>
 
-TinyGPSPlus gps;
+namespace gpsModule {
+  inline TinyGPSPlus gps;
 
-void setup() {
-  Serial.begin(115200);
-  while (!Serial) {}
-
-  Serial1.begin(38400);
-  Serial.println("GPS running");
-}
-
-void loop() {
-  while (Serial1.available()) {
-    gps.encode(Serial1.read());
+  inline void begin(uint32_t baud = 38400, HardwareSerial &port = Serial1) {
+    port.begin(baud);
+    Serial.println("GPS ready");
   }
 
-  if (gps.location.isUpdated()) {
-    Serial.print("Lat: ");
-    Serial.print(gps.location.lat(), 6);
-    Serial.print(" Lon: ");
-    Serial.print(gps.location.lng(), 6);
-    Serial.print(" Sats: ");
-    Serial.println(gps.satellites.value());
+  inline void update(HardwareSerial &port = Serial1) {
+    while (port.available()) {
+      gps.encode(port.read());
+    }
+  }
+
+  inline void printLocation() {
+    if (gps.location.isUpdated()) {
+      Serial.print("Lat: ");
+      Serial.print(gps.location.lat(), 6);
+      Serial.print(" Lon: ");
+      Serial.print(gps.location.lng(), 6);
+      Serial.print(" Sats: ");
+      Serial.println(gps.satellites.value());
+    }
   }
 }

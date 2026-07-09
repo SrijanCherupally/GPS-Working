@@ -1,27 +1,26 @@
 #include <Arduino.h>
-#include <TinyGPSPlus.h>
-
-TinyGPSPlus gps;
+#include "gps.h"
+#include "imu_icm42688.h"
+#include "dps368.h"
 
 void setup() {
   Serial.begin(115200);
   while (!Serial) {}
 
-  Serial1.begin(38400);
-  Serial.println("GPS running");
+  gpsModule::begin();
+  icm42688::begin();
+  dps368::begin();
+
+  Serial.println("Sensor system initialized");
 }
 
 void loop() {
-  while (Serial1.available()) {
-    gps.encode(Serial1.read());
-  }
+  gpsModule::update();
+  gpsModule::printLocation();
 
-  if (gps.location.isUpdated()) {
-    Serial.print("Lat: ");
-    Serial.print(gps.location.lat(), 6);
-    Serial.print(" Lon: ");
-    Serial.print(gps.location.lng(), 6);
-    Serial.print(" Sats: ");
-    Serial.println(gps.satellites.value());
-  }
+  icm42688::update();
+  icm42688::printReading();
+
+  dps368::update();
+  dps368::printPressureTemperature();
 }
