@@ -1,11 +1,15 @@
 #pragma once
 #include <Arduino.h>
-#include <Wire.h>
+#include <SPI.h>
 #include <ICM42688.h>
 
 namespace icm42688 {
-  inline ICM42688 imu(Wire, 0x68);
+  inline ICM42688 imu(SPI, 17);
   inline bool initialized = false;
+  inline int csPin = 17;
+  inline int sclkPin = 18;
+  inline int misoPin = 16;
+  inline int mosiPin = 19;
   inline float accelX = 0.0f;
   inline float accelY = 0.0f;
   inline float accelZ = 0.0f;
@@ -14,8 +18,16 @@ namespace icm42688 {
   inline float gyroZ = 0.0f;
   inline float temperatureC = 0.0f;
 
-  inline bool begin() {
-    Wire.begin();
+  inline bool begin(int chipSelectPin = 17, int clockPin = 18, int misoPinNumber = 16, int mosiPinNumber = 19) {
+    csPin = chipSelectPin;
+    sclkPin = clockPin;
+    misoPin = misoPinNumber;
+    mosiPin = mosiPinNumber;
+
+    SPI.begin();
+    pinMode(csPin, OUTPUT);
+    digitalWrite(csPin, HIGH);
+    delay(50);
 
     int status = imu.begin();
     if (status != 0) {
@@ -32,7 +44,14 @@ namespace icm42688 {
     imu.setFilters(true, true);
 
     initialized = true;
-    Serial.println("ICM42688 ready");
+    Serial.print("ICM42688 ready on CS=");
+    Serial.print(csPin);
+    Serial.print(" SCLK=");
+    Serial.print(sclkPin);
+    Serial.print(" MISO=");
+    Serial.print(misoPin);
+    Serial.print(" MOSI=");
+    Serial.println(mosiPin);
     return true;
   }
 

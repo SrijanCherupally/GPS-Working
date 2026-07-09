@@ -7,6 +7,11 @@
 namespace dps368 {
   inline Dps3xx sensor;
   inline bool initialized = false;
+  inline int csPin = 16;
+  inline int sclkPin = 18;
+  inline int misoPin = 20;
+  inline int mosiPin = 19;
+  inline uint8_t slaveAddress = 0x77;
   inline float temperatureC = 0.0f;
   inline float pressurePa = 0.0f;
   inline float altitudeM = 0.0f;
@@ -16,13 +21,31 @@ namespace dps368 {
   inline uint8_t prsMr = DPS__MEASUREMENT_RATE_8;
   inline uint8_t prsOsr = DPS__OVERSAMPLING_RATE_8;
 
-  inline bool begin() {
+  inline bool begin(int chipSelectPin = 16, int clockPin = 18, int misoPinNumber = 20, int mosiPinNumber = 19, uint8_t address = 0x77) {
+    csPin = chipSelectPin;
+    sclkPin = clockPin;
+    misoPin = misoPinNumber;
+    mosiPin = mosiPinNumber;
+    slaveAddress = address;
+
+    pinMode(csPin, OUTPUT);
+    digitalWrite(csPin, HIGH);
     Wire.begin();
-    sensor.begin(Wire);
+    delay(50);
+    sensor.begin(Wire, slaveAddress);
     sensor.correctTemp();
 
     initialized = true;
-    Serial.println("DPS368 ready");
+    Serial.print("DPS368 ready on CS=");
+    Serial.print(csPin);
+    Serial.print(" SCLK=");
+    Serial.print(sclkPin);
+    Serial.print(" MISO=");
+    Serial.print(misoPin);
+    Serial.print(" MOSI=");
+    Serial.print(mosiPin);
+    Serial.print(" addr=0x");
+    Serial.println(slaveAddress, HEX);
     return true;
   }
 
