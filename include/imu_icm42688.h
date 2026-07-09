@@ -6,10 +6,10 @@
 namespace icm42688 {
   inline ICM42688 imu(SPI, 17);
   inline bool initialized = false;
-  inline int csPin = 17;
-  inline int sclkPin = 18;
-  inline int misoPin = 16;
-  inline int mosiPin = 19;
+  inline int csPin = 9;
+  inline int sclkPin = 10;
+  inline int misoPin = 8;
+  inline int mosiPin = 11;
   inline float accelX = 0.0f;
   inline float accelY = 0.0f;
   inline float accelZ = 0.0f;

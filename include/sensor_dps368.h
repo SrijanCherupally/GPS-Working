@@ -7,9 +7,9 @@
 namespace dps368 {
   inline Dps3xx sensor;
   inline bool initialized = false;
-  inline int csPin = 16;
+  inline int csPin = 17;
   inline int sclkPin = 18;
-  inline int misoPin = 20;
+  inline int misoPin = 16;
   inline int mosiPin = 19;
   inline uint8_t slaveAddress = 0x77;
   inline float temperatureC = 0.0f;
