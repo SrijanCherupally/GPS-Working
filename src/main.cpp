@@ -23,7 +23,7 @@ void loop() {
     NEO_M9.update();
     NEO_M9.printReport();
 
-    if (ICM42688.isInitialized()) {
+    /* if (ICM42688.isInitialized()) {
         ICM42688.update();
         Serial.print("IMU: ");
         Serial.print(ICM42688.getAccX(), 3); Serial.print(",");
@@ -42,6 +42,7 @@ void loop() {
         Serial.print(DPS368.getPressurePa(), 2); Serial.print(" Pa | ");
         Serial.print(DPS368.getAltitudeCm(), 2); Serial.println(" cm");
     }
+        */
 
-    delay(250);
+    //delay(10);
 }
