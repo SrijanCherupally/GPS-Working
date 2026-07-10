@@ -11,6 +11,8 @@ RGBLed led(24,22,23);
 
 void setup() {
     Serial.begin(115200);
+    delay(1000);
+    Serial.println("Boot: firmware starting");
     led.setColor(1.0f, 1.0f, 1.0f);
     DPS368.begin();
     ICM42688.begin();

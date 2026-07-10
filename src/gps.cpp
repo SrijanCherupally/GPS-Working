@@ -8,52 +8,54 @@ private:
 public:
   void begin() {
     Serial1.begin(38400);
-    Serial.println("GPS running");
+    Serial.println("GPS running at 38400");
   }
 
   void update() {
     while (Serial1.available()) {
-      gps.encode(Serial1.read());
+      char c = static_cast<char>(Serial1.read());
+      Serial.print(c);
+      gps.encode(c);
     }
   }
 
-  bool hasFix() const {
+  bool hasFix() {
     return gps.location.isValid();
   }
 
-  bool hasNewLocation() const {
+  bool hasNewLocation() {
     return gps.location.isUpdated();
   }
 
-  double getLatitude() const {
+  double getLatitude() {
     return gps.location.lat();
   }
 
-  double getLongitude() const {
+  double getLongitude() {
     return gps.location.lng();
   }
 
-  double getAltitudeMeters() const {
+  double getAltitudeMeters() {
     return gps.altitude.meters();
   }
 
-  double getSpeedMps() const {
+  double getSpeedMps() {
     return gps.speed.mps();
   }
 
-  double getSpeedKmph() const {
+  double getSpeedKmph() {
     return gps.speed.kmph();
   }
 
-  double getCourseDeg() const {
+  double getCourseDeg() {
     return gps.course.deg();
   }
 
-  int getSatellites() const {
+  int getSatellites() {
     return gps.satellites.value();
   }
 
-  void printReport() const {
+  void printReport() {
     if (gps.location.isUpdated()) {
       Serial.print("Lat: ");
       Serial.print(gps.location.lat(), 6);
